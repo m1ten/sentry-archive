@@ -16,7 +16,7 @@ export async function execute(interaction) {
 
     // set the bot's status
     await client.user.setPresence({
-        activities: [{ name: 'with bun and discord.js' }],
+        activities: [{ name: 'with bun.ts' }],
         status: 'idle',
     });
 
