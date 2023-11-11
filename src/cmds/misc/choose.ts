@@ -1,4 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('choose')
@@ -16,9 +17,9 @@ export const data = new SlashCommandBuilder()
             .setRequired(false),
     );
 
-export async function execute(interaction) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     // get all options
-    const options = interaction.options.getString('options').split(',');
+    const options = interaction.options.getString('options')?.split(',') as string[];
     // get the amount of options to choose
     const amount = interaction.options.getInteger('amount') || 1;
 
