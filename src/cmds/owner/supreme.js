@@ -1,27 +1,30 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import util from '../../util';
 
 export const data = new SlashCommandBuilder()
     .setName('supreme')
     .setDescription('says who is supreme!')
-    //@ts-ignore
     .addStringOption((option) =>
         option
             .setName('message')
             .setDescription('What you want to say')
             .setRequired(true),
     )
-    //@ts-ignore
     .addUserOption((option) =>
         option
             .setName('user')
             .setDescription('The user to send the message to')
             .setRequired(true),
-    );
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
+    
 export async function execute(interaction) {
     // check if the user is owner of the bot
-    if (interaction.user.id !== process.env.OWNER_ID) {
-        await interaction.reply('You are not the owner of this bot!');
-        return;
+    if (!util.isOwner(interaction.user.id)) {
+        return await interaction.reply({
+            content: 'You are not the owner of this bot!',
+            ephemeral: true,
+        });
     }
 
     const message = interaction.options.getString('message');

@@ -1,12 +1,21 @@
-import { SlashCommandBuilder } from 'discord.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import util from '../../util';
 import fs from 'fs';
 import path from 'path';
 
 export const data = new SlashCommandBuilder()
     .setName('reload')
-    .setDescription('Reloads all commands.');
+    .setDescription('Reloads all commands.')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 export async function execute(interaction: ChatInputCommandInteraction) {
+
+    if (!util.isOwner(interaction.user.id)) {
+        return await interaction.reply({
+            content: 'You are not the owner of this bot!',
+            ephemeral: true,
+        });
+    }
+
     const commandsPath = path.join(__dirname, '../cmds');
     //@ts-ignore
     const commandFiles = fs

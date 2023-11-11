@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 import fs from 'fs';
 
 export const data = new SlashCommandBuilder()
@@ -9,16 +9,10 @@ export const data = new SlashCommandBuilder()
             .setName('amount')
             .setDescription('How many messages to delete')
             .setRequired(true),
-    );
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages);
 
 export async function execute(interaction) {
-    if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
-        await interaction.reply(
-            'You do not have permission to use this command!',
-        );
-        return;
-    }
-
     let amount = interaction.options.getInteger('amount');
     if (amount <= 0) {
         await interaction.reply('Amount must be greater than 0!');

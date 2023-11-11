@@ -1,17 +1,30 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import util from '../../util';
 
 export const data = new SlashCommandBuilder()
     .setName('spam')
     .setDescription('spam random messages!')
-    .addIntegerOption(option => option.setName('amount').setDescription('How many messages to spam').setRequired(true))
-    .addBooleanOption(option => option.setName('delete').setDescription('Whether to delete after send').setRequired(false));
+    .addIntegerOption((option) =>
+        option
+            .setName('amount')
+            .setDescription('How many messages to spam')
+            .setRequired(true),
+    )
+    .addBooleanOption((option) =>
+        option
+            .setName('delete')
+            .setDescription('Whether to delete after send')
+            .setRequired(false),
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 export async function execute(interaction) {
-
     // owner of the bot only
-    if (interaction.user.id !== process.env.OWNER_ID) {
-        await interaction.reply('You are not the owner of this bot!');
-        return;
+    if (!util.isOwner(interaction.user.id)) {
+        return await interaction.reply({
+            content: 'You are not the owner of this bot!',
+            ephemeral: true,
+        });
     }
 
     const amount = interaction.options.getInteger('amount');
@@ -31,7 +44,7 @@ export async function execute(interaction) {
     // send the messages in separate messages
     for (let i = 0; i < messages.length; i++) {
         // wait 1 second before sending the next message to prevent rate limiting
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         await interaction.channel.send(messages[i]);
     }
 
@@ -39,10 +52,10 @@ export async function execute(interaction) {
 
     if (deleteAfter) {
         // delete the messages after waiting 5 seconds
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise((resolve) => setTimeout(resolve, 5000));
         await interaction.channel.bulkDelete(amount);
     }
-    
+
     // reply to the interaction
     await interaction.reply(`Sent ${amount} messages!`);
 }

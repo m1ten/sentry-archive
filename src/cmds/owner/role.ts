@@ -1,5 +1,5 @@
-import { SlashCommandBuilder } from 'discord.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import { ChatInputCommandInteraction, PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
+import util from '../../util';
 
 export const data = new SlashCommandBuilder()
     .setName('role')
@@ -25,16 +25,21 @@ export const data = new SlashCommandBuilder()
             .setName('member')
             .setDescription('Which user?')
             .setRequired(true),
-    );
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 export async function execute(interaction: ChatInputCommandInteraction) {
+
+    // owner of the bot only
+    if (!util.isOwner(interaction.user.id)) {
+        return await interaction.reply({
+            content: 'You are not the owner of this bot!',
+            ephemeral: true,
+        });
+    }
+
     const action = interaction.options.get('action')?.value as string;
     const role = interaction.options.get('role')?.value as string;
     const user = interaction.options.get('member')?.value as string;
-
-    if (interaction.user.id !== '648929307741257729') {
-        await interaction.reply('You are not allowed to use this command.');
-        return;
-    }
 
     if (action === 'add') {
         await interaction.guild?.members.cache.get(user)?.roles.add(role);

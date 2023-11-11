@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { PermissionFlagsBits, SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
     .setName('lock')
@@ -8,15 +8,11 @@ export const data = new SlashCommandBuilder()
             .setName('channel')
             .setDescription('The channel to lock')
             .setRequired(true),
-    );
+    )
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels);
 
 export async function execute(interaction) {
     const channel_string = interaction.options.get('channel').value;
-
-    if (interaction.user.id !== '648929307741257729') {
-        await interaction.reply('You are not allowed to use this command.');
-        return;
-    }
 
     const channel = interaction.guild.channels.cache.get(channel_string);
 
