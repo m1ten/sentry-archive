@@ -1,5 +1,14 @@
-import { SlashCommandBuilder } from 'discord.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import {
+    ChatInputCommandInteraction,
+    ChannelType,
+    SlashCommandBuilder,
+} from 'discord.js';
+
+type Post = {
+    data: {
+        over_18: boolean;
+    };
+};
 
 export const data = new SlashCommandBuilder()
     .setName('meme')
@@ -16,17 +25,12 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         `https://www.reddit.com/r/${subreddit}.json?sort=top&t=week`,
     ).then((response) => response.json());
 
-    type Post = {
-        data: {
-            over_18: boolean;
-        };
-    };
+    const allowed =
+        interaction.channel?.type === ChannelType.GuildText &&
+        interaction.channel.nsfw
+            ? children
+            : children.filter((post: Post) => !post.data.over_18);
 
-    // const allowed = interaction.channel.nsfw
-    //     ? children
-    //     : children.filter((post) => !post.data.over_18);
-
-    const allowed = children.filter((post: Post) => !post.data.over_18);
     const post = allowed[Math.floor(Math.random() * allowed.length)].data;
 
     await interaction.reply(post.url);
