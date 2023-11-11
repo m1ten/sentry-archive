@@ -3,8 +3,18 @@ import { SlashCommandBuilder } from 'discord.js';
 export const data = new SlashCommandBuilder()
     .setName('choose')
     .setDescription('Choose a random option!')
-    .addStringOption(option => option.setName('options').setDescription('options, separated by comma').setRequired(true))
-    .addIntegerOption(option => option.setName('amount').setDescription('How many options to choose').setRequired(false));
+    .addStringOption((option) =>
+        option
+            .setName('options')
+            .setDescription('options, separated by comma')
+            .setRequired(true),
+    )
+    .addIntegerOption((option) =>
+        option
+            .setName('amount')
+            .setDescription('How many options to choose')
+            .setRequired(false),
+    );
 
 export async function execute(interaction) {
     // get all options

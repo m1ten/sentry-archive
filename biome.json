@@ -8,6 +8,13 @@
 		"indentStyle": "space",
 		"indentWidth": 4
 	},
+	"javascript": {
+		"formatter": {
+			"enabled": true,
+			"quoteStyle": "single",
+			"semicolons": "always"
+		}
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {

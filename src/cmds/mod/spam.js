@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
     .addIntegerOption(option => option.setName('amount').setDescription('How many messages to spam').setRequired(true))
     .addBooleanOption(option => option.setName('delete').setDescription('Whether to delete after send').setRequired(false));
 
-export async function execute(interaction: any) {
+export async function execute(interaction) {
 
     // owner of the bot only
     if (interaction.user.id !== process.env.OWNER_ID) {
@@ -24,7 +24,7 @@ export async function execute(interaction: any) {
     }
 
     // generate random messages
-    let messages = [];
+    const messages = [];
     for (let i = 0; i < amount; i++) {
         messages.push(Math.random().toString(36).substring(2, 15));
     }
