@@ -6,13 +6,13 @@ export const data = new SlashCommandBuilder()
     .addStringOption(option => option.setName('options').setDescription('options, separated by comma').setRequired(true))
     .addIntegerOption(option => option.setName('amount').setDescription('How many options to choose').setRequired(false));
 
-export async function execute(interaction: any) {
+export async function execute(interaction) {
     // get all options
     const options = interaction.options.getString('options').split(',');
     // get the amount of options to choose
     const amount = interaction.options.getInteger('amount') || 1;
 
-    let chosen = [];
+    const chosen = [];
     // choose a random option
     for (let i = 0; i < amount; i++) {
         chosen.push(options[Math.floor(Math.random() * options.length)]);

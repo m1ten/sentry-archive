@@ -6,7 +6,7 @@ module.exports = {
         .setDescription('lock a channel!')
         //@ts-ignore
         .addChannelOption(option => option.setName('channel').setDescription('The channel to lock').setRequired(true)),
-    async execute(interaction: any) {
+    async execute(interaction) {
         const channel_string = interaction.options.get('channel').value;
 
         if (interaction.user.id !== '648929307741257729') {
