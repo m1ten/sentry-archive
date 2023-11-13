@@ -20,11 +20,16 @@ export async function execute(interaction) {
         status: 'idle',
     });
 
-    console.log(`Ready! Logged in as ${client.user.tag}`);
-    console.log(
+    const msgs = [
+        `Ready! Logged in as ${client.user.tag}`,
         `Loaded commands: ${client.commands
             .map((c) => c.data.name)
             .join(', ')}`,
-    );
-    console.log(`Commands: ${client.commands.size}`);
+        `Total commands: ${client.commands.size}`,
+    ];
+
+    console.log(msgs.join('\n'));
+
+    // dm the owner
+    await client.users.send(process.env.OWNER_ID, msgs.join('\n'));
 }
