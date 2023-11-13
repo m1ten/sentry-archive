@@ -1,5 +1,6 @@
-import { SlashCommandBuilder } from 'discord.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import type { ChatInputCommandInteraction, ColorResolvable } from 'discord.js';
+import util from '../../util';
 
 export const data = new SlashCommandBuilder()
     .setName('say')
@@ -13,5 +14,21 @@ export const data = new SlashCommandBuilder()
     );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-    await interaction.reply(`${interaction.options.get('message')?.value}`);
+    const msg = interaction.options.getString('message', true);
+    const embed = new EmbedBuilder()
+        .setColor(util.colors.primary as ColorResolvable)
+        .addFields({
+            name: 'say',
+            value: `${msg}`,
+            inline: true,
+        })
+        .setTimestamp(new Date())
+        .setFooter({
+            text: `requested by ${interaction.user.tag}`,
+            iconURL: interaction.user.displayAvatarURL() as string,
+        });
+
+    await interaction.reply({
+        embeds: [embed],
+    });
 }
