@@ -1,6 +1,7 @@
 export const colors = {
     primary: '#00b0f4',
     success: '#00f49c',
+    nonErrRed: '#f45',
     error: '#f44336',
     warning: '#ff9800',
     info: '#2196f3',
