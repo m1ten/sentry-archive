@@ -53,8 +53,13 @@ export async function execute(interaction: ChatInputCommandInteraction) {
                 value: uptimeString,
                 inline: true,
             },
+            // Embed links to the github repo and the owner's github
+            {
+                name: 'Links',
+                value: `[GitHub](${githubLink})`,
+                inline: true,
+            },
         )
-        .setTimestamp(new Date())
         .setFooter({
             text: `Written in TS using discord.js and bun.sh\nMade by @${owner}`,
             iconURL: interaction.client.users.cache
