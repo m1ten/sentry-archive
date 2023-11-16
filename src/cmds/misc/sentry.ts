@@ -24,6 +24,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
     const uptimeString = `${fmtUptime.days}d ${fmtUptime.hours}h ${fmtUptime.minutes}m ${fmtUptime.seconds}s`;
     const owner = interaction.client.users.cache.get(process.env.OWNER_ID)?.tag;
 
+    const githubLink = 'https://github.com/m1ten/sentry';
+
     // Embedded message with information about Sentry
     const embed = new EmbedBuilder()
         .setColor('#32CD32')
@@ -58,7 +60,8 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             iconURL: interaction.client.users.cache
                 .get(process.env.OWNER_ID)
                 ?.displayAvatarURL() as string,
-        });
+        })
+        .setURL(githubLink);
 
     await interaction.reply({
         embeds: [embed],
