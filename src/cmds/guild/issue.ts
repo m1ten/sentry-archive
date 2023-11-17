@@ -6,6 +6,7 @@ import {
 } from 'discord.js';
 
 import util from '../../util';
+import { sleep } from 'bun';
 
 export const data = new SlashCommandBuilder()
     .setName('issue')
@@ -113,4 +114,65 @@ export async function execute(interaction: ChatInputCommandInteraction) {
             ephemeral: true,
         });
     }
+
+    // Ask the user if they want to save the issue anonymously
+    // If they do, save it to a file
+
+    // Edit the message to say "Would you like to save this issue anonymously?"
+
+    sleep(2000).then(async () => {
+        // edit the message and add a button
+        interaction.editReply({
+            content: 'Would you like to save this issue anonymously?',
+            components: [
+                {
+                    type: 1,
+                    components: [
+                        {
+                            type: 2,
+                            label: 'Yes',
+                            style: 3,
+                            custom_id: 'yes',
+                        },
+                        {
+                            type: 2,
+                            label: 'No',
+                            style: 4,
+                            custom_id: 'no',
+                        },
+                    ],
+                },
+            ],
+        });
+    });
+
+    // wait for the user to click the button
+    const collector = interaction.channel?.createMessageComponentCollector({
+        time: 1000 * 60 * 5,
+    });
+
+    collector?.on('collect', async (i) => {
+        if (i.customId === 'yes') {
+            // save the issue
+            // WIP
+            await interaction.editReply({
+                content: 'Issue saved!',
+                components: [],
+            });
+        } else if (i.customId === 'no') {
+            await interaction.editReply({
+                content: 'Issue not saved!',
+                components: [],
+            });
+        }
+    });
+
+    collector?.on('end', async (collected) => {
+        if (collected.size === 0) {
+            await interaction.editReply({
+                content: 'Issue not saved!',
+                components: [],
+            });
+        }
+    });
 }
