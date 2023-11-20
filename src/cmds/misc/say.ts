@@ -24,25 +24,22 @@ export const data = new SlashCommandBuilder()
     );
 
 export async function execute(interaction: ChatInputCommandInteraction) {
-    const msg = interaction.options.getString('message', true);
-    const channelType =
-        interaction.options.getChannel('channel', false) || interaction.channel;
-    const channel = interaction.guild?.channels.cache.get(
-        channelType?.id as string,
-    ) as TextChannel | undefined;
-
-    const embed = new EmbedBuilder()
-        .setColor(util.colors.primary as ColorResolvable)
-        .addFields({
-            name: 'say',
-            value: `${msg}`,
-            inline: true,
-        })
-        .setTimestamp(new Date())
-        .setFooter({
-            text: `requested by ${interaction.user.tag}`,
-            iconURL: interaction.user.displayAvatarURL() as string,
-        });
+    const msg = interaction.options.getString('message', true), channelType =
+            interaction.options.getChannel('channel', false) || interaction.channel,
+        channel = interaction.guild?.channels.cache.get(
+            channelType?.id as string,
+        ) as TextChannel | undefined, embed = new EmbedBuilder()
+            .setColor(util.colors.primary as ColorResolvable)
+            .addFields({
+                name: 'say',
+                value: `${msg}`,
+                inline: true,
+            })
+            .setTimestamp(new Date())
+            .setFooter({
+                text: `requested by ${interaction.user.tag}`,
+                iconURL: interaction.user.displayAvatarURL() as string,
+            });
 
     await channel?.send({
         embeds: [embed],

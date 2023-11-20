@@ -1,14 +1,9 @@
 // Will be updated to use the reddit api instead of the random post api
 // Also support custom subreddits
 
-import {
-    ChatInputCommandInteraction,
-    SlashCommandBuilder,
-    EmbedBuilder,
-    ColorResolvable,
-} from 'discord.js';
+import {ChatInputCommandInteraction, ColorResolvable, EmbedBuilder, SlashCommandBuilder,} from 'discord.js';
 
-import { colors } from '../../util';
+import {colors} from '../../util';
 
 export const data = new SlashCommandBuilder()
     .setName('reddit')
@@ -115,8 +110,7 @@ async function getPost(
         const response = await fetch(
             `https://www.reddit.com/r/${subreddit}/random/.json`,
         );
-        const body = await response.json();
-        return body;
+        return await response.json();
     } catch (error) {
         console.log(error);
         return '';

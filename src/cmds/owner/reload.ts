@@ -5,6 +5,10 @@ import {
 } from 'discord.js';
 import util from '../../util';
 
+
+// run a process to git pull
+import {spawn} from "child_process";
+
 export const data = new SlashCommandBuilder()
     .setName('reload')
     .setDescription('Reloads all commands.')
@@ -23,9 +27,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         content: 'Restarting...',
         ephemeral: true,
     });
-
-    // run a process to git pull
-    const child = require('child_process').spawn('git', ['pull']);
+    const child = spawn('git', ['pull']);
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     child.stdout.on('data', (data: any) => {

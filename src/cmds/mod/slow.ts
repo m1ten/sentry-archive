@@ -36,7 +36,7 @@ export async function execute(interaction: ChatInputCommandInteraction) {
         return;
     }
 
-    channel.setRateLimitPerUser(amount);
+    await channel.setRateLimitPerUser(amount);
 
     // Set slow mode to amount for channel (mention the channel)
     await interaction.reply(`Set slow mode to \`${amount}\` for ${channel}`);

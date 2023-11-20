@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
 import util from '../../util';
 
 export const data = new SlashCommandBuilder()
@@ -18,7 +18,7 @@ export const data = new SlashCommandBuilder()
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
     
-export async function execute(interaction) {
+export async function execute(interaction: ChatInputCommandInteraction) {
     // check if the user is owner of the bot
     if (!util.isOwner(interaction.user.id)) {
         return await interaction.reply({
